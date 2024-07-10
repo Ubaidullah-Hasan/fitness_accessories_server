@@ -1,13 +1,13 @@
-import express from 'express';
+import express, { Application, Request, Response } from 'express';
 import cors from 'cors';
 
-export const app = express();
+export const app:Application = express();
 
 // parser
 app.use(cors())
 app.use(express.json());
 
 
-app.get("/", (req, res) => {
+app.get("/", (req: Request, res: Response) => {
     res.send("Server is running...");
 })

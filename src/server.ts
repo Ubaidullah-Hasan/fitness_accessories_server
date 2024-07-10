@@ -1,6 +1,20 @@
+import mongoose from "mongoose";
 import { app } from "./app";
 import config from "./App/config";
 
-app.listen(config.port, () => {
-    console.log(`Server is Fire at http://localhost:${config.port}`);
-});
+
+
+async function main() {
+    try {
+        await mongoose.connect(config.database_url as string);
+
+        app.listen(config.port, () => {
+            console.log(`\n***** \nMongoDB Connected! And post's http://localhost:${config.port} \n*****\n`);
+        });
+
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+main();
