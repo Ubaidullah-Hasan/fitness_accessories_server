@@ -9,7 +9,7 @@ async function main() {
         await mongoose.connect(config.database_url as string);
 
         app.listen(config.port, () => {
-            console.log(`\n***** \nMongoDB Connected! And post's http://localhost:${config.port} \n*****\n`);
+            console.log(`\n***** \nMongoDB Connected! And port's http://localhost:${config.port} \n*****\n`);
         });
 
     } catch (error) {
