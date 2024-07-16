@@ -1,4 +1,4 @@
 export type TCategories = {
-    name: string,
-    img: string,
+    categoriName: string,
+    image: string,
 }

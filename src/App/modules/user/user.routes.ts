@@ -5,7 +5,7 @@ const router = Router();
 
 router.get(
     "/reviews",
-    userController.getAllProducts
+    userController.getAllCustomarReview
 )
 
 export const userRoute = router

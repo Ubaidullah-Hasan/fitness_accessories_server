@@ -16,7 +16,8 @@ const userSchema = new Schema<TUser>({
         required: true
     },
     productId: [{
-        type: String,
+        type: Schema.Types.ObjectId,
+        ref: "Product",
         required: true
     }],
     role: {
@@ -27,7 +28,11 @@ const userSchema = new Schema<TUser>({
         type: String,
         required: true
     }
-});
+},
+    {
+        timestamps: true,
+    }
+);
 
 export const UserModel = model<TUser>('User', userSchema);
 
