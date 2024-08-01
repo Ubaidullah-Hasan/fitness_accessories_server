@@ -1,18 +1,20 @@
+import QueryBuilder from "../../middleware/QueryBuilder";
 import { ProductModel } from "./products.model";
 
-const getAllProductsFromDB = async (query: any) => {
-    const { limit } = query;
-
-    let order: number = -1;
-    if(query.order){
-        order = parseInt(query.order);
-    }
-    
-
-    const result = await ProductModel.find().limit(limit).sort({ rating: order});
-    if(result.length === 0){
-        return "Products not found!"
-    }
+const getAllProductsFromDB = async (query: Record<string, unknown>) => {
+    console.log(query);
+    const productQuery = new QueryBuilder(
+        ProductModel.find(),
+        query,
+    )
+        .search(["name"])
+        .sort()
+        .limit()
+        .priceRange()
+        // .filter()
+    // .fields();
+    const result = await productQuery.modelQuery;
+    // console.log(result);
     return result;
 }
 
