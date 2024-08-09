@@ -6,4 +6,4 @@ const categoriesSchema = new Schema<TCategories>({
     image: String
 });
 
-export const CategoriesModel = model<TCategories>("Categories", categoriesSchema)
+export const CategoriesModel = model<TCategories>("Category", categoriesSchema)

@@ -6,6 +6,11 @@ const router = Router();
 router.get(
     "/",
     productController.getAllProducts
+);
+
+router.get(
+    "/:id",
+    productController.getSingleProducts
 )
 
 export const productsRoute = router
