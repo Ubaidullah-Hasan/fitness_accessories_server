@@ -8,4 +8,9 @@ router.get(
     userController.getAllCustomarReview
 )
 
+router.post(
+    "/create-user",
+    userController.createUser
+)
+
 export const userRoute = router

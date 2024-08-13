@@ -1,11 +1,16 @@
 import { Router } from "express";
-import { getAllCategories } from "./categories.controller";
+import { categoriesController } from "./categories.controller";
 
 const router = Router();
 
+router.post(
+    "/",
+    categoriesController.createCategories,
+)
+
 router.get(
     "/",
-    getAllCategories
+    categoriesController.getAllCategories,
 )
 
 export const  categoriesRouter = router

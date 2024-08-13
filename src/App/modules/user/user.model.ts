@@ -16,7 +16,8 @@ const userSchema = new Schema<TUser>({
         required: true
     },
     productId: [{
-        type: Schema.Types.ObjectId,
+        type: String, 
+        // type: Schema.Types.ObjectId, todo
         ref: "Product",
         required: true
     }],

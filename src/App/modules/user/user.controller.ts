@@ -10,6 +10,19 @@ const getAllCustomarReview = async (req: Request, res: Response) => {
     }
 }
 
+const createUser = async (req: Request, res: Response) => {
+    try {
+        const user = req.body;
+        const result = await userServices.createUserIntoDB(user);
+        res.send(result);
+    } catch (error: any) {
+        res.status(404).send({
+            message: error.message
+        });
+    }
+}
+
 export const userController = {
-    getAllCustomarReview
+    getAllCustomarReview,
+    createUser
 }

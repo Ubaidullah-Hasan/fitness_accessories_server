@@ -1,3 +1,4 @@
+import { TUser } from "./user.interface";
 import { UserModel } from "./user.model";
 
 const getAllCustomarsReviewFromDB = async (query: Record<string, unknown>) => {
@@ -15,6 +16,12 @@ const getAllCustomarsReviewFromDB = async (query: Record<string, unknown>) => {
     return result;
 }
 
+const createUserIntoDB = async (user: TUser) => {
+    const result = await UserModel.create(user);
+    return result;
+}
+
 export const userServices = {
+    createUserIntoDB,
     getAllCustomarsReviewFromDB
 }

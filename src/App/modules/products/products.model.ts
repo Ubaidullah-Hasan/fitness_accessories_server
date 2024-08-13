@@ -2,7 +2,11 @@ import mongoose, { model, Schema } from "mongoose";
 import { TProduct } from "./products.interface";
 
 const productSchema: Schema = new Schema<TProduct>({
-    name: { type: String, required: true },
+    name: {
+        type: String,
+        required: true,
+        unique: true
+    },
     description: { type: String, required: true },
     categoryId: {
         type: mongoose.Schema.Types.ObjectId,
