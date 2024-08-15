@@ -1,4 +1,3 @@
-import { ObjectId } from "mongodb";
 import mongoose, { FilterQuery, Query } from "mongoose";
 
 class QueryBuilder<T> {
@@ -25,16 +24,6 @@ class QueryBuilder<T> {
         return this; // for chaining (must return it)
     };
 
-    filter() {
-        const copyQuery = { ...this.query };
-        console.log(copyQuery, "filter");
-        const excludeFields = ["searchTerm", "order", "priceRange", "limit"];
-        excludeFields.forEach(el => delete copyQuery[el]);
-        // console.log({...this.query });
-        this.modelQuery = this.modelQuery.find(copyQuery as FilterQuery<T>)
-        return this;
-    }
-
     sort() {
         let sort = (this?.query?.sort as string) || "asc";
         this.modelQuery = this.modelQuery.sort({ price: sort as "desc" | "asc" });
@@ -58,7 +47,6 @@ class QueryBuilder<T> {
     }
 
     filterByCategories() {
-        // todo: doesnot work it
         const selectedCategoriesStr = this?.query?.selectedCategories as string;
         if (selectedCategoriesStr) {
             const selectedCategories: mongoose.Types.ObjectId[] = selectedCategoriesStr.split(',').map(cat => new mongoose.Types.ObjectId(cat.trim()));
@@ -75,13 +63,6 @@ class QueryBuilder<T> {
     limit() {
         let limit = (this?.query?.limit as number);
         this.modelQuery = this.modelQuery.limit(limit);
-        return this;
-    }
-
-
-    fields() {
-        const fields = (this?.query?.fields as string)?.split(",")?.join(" ") || "-__v";
-        this.modelQuery = this.modelQuery.select(fields);
         return this;
     }
 

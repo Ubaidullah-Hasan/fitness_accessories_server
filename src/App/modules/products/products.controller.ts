@@ -4,7 +4,6 @@ import { productServices } from "./products.services";
 const getAllProducts = async (req: Request, res: Response) => {
 
     try {
-        console.log("get all products");
         const products = await productServices.getAllProductsFromDB(req.query);
         res.send(products);
     } catch (err) {

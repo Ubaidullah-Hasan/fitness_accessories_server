@@ -5,11 +5,9 @@ import { CartItemModel } from './cart.model';
 // Add product to cart
 export const addToCart = async (req: Request, res: Response) => {
     const { productId, quantity } = req.body;
-    console.log(req.body);
 
     try {
         const product = await ProductModel.findById({_id: productId});
-        console.log(product, "line12");
         if (!product) {
             return res.status(404).json({ message: 'Product not found' });
         }
@@ -32,7 +30,14 @@ export const addToCart = async (req: Request, res: Response) => {
 
             // Update the quantity of the existing cart item
             existingCartItem.quantity = newQuantity;
-            await existingCartItem.save();
+            existingCartItem.stock = existingCartItem.stock - quantity;
+            const result = await existingCartItem.save();
+            
+            if(result){
+                product.stock = product.stock - quantity;
+                await product.save();
+            }
+
         } else {
             // Create a new cart item
             const newCartItem = new CartItemModel({
@@ -40,9 +45,13 @@ export const addToCart = async (req: Request, res: Response) => {
                 name: product.name,
                 price: product.price,
                 quantity,
-                stock: product.stock,
+                stock: product.stock - quantity,
             });
-            await newCartItem.save();
+            const result = await newCartItem.save();
+            if (result) {
+                product.stock = product.stock - quantity;
+                await product.save();
+            }
         }
 
         res.status(200).json({ 

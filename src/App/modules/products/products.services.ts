@@ -4,9 +4,8 @@ import { ProductModel } from "./products.model";
 import { TProduct } from "./products.interface";
 
 const getAllProductsFromDB = async (query: Record<string, unknown>) => {
-    console.log(query);
     const productQuery = new QueryBuilder(
-        ProductModel.find(),
+        ProductModel.find().populate("categoryId"),
         query,
     )
         .search(["name"])
