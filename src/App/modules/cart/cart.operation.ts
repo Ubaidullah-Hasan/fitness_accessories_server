@@ -63,7 +63,12 @@ export const addToCart = async (req: Request, res: Response) => {
     }
 };
 
+const getAllCart = async(req: Request, res: Response) => {
+    const carts = await CartItemModel.find();
+    res.status(200).json(carts);
+}
 
 export const cartOperation = {
-    addToCart
+    addToCart,
+    getAllCart,
 }
