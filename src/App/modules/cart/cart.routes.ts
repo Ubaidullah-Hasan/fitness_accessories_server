@@ -12,5 +12,9 @@ router.get(
     "/",
     cartOperation.getAllCart
 );
+router.patch(
+    "/change-quantity/:id",
+    cartOperation.changeCartQuantity
+);
 
 export const cartsRoute = router;

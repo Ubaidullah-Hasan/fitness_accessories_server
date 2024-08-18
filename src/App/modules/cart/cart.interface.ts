@@ -1,9 +1,12 @@
-import mongoose from "mongoose";
+import mongoose, { Schema, Document } from 'mongoose';
 
-export type TCartItem = {
+// Define the TCartItem interface, which extends Mongoose's Document interface
+export interface TCartItem extends Document {
     productId: mongoose.Types.ObjectId;
     name: string;
     price: number;
     quantity: number;
     stock: number;
-};
+    image: string;
+    brand: string;
+}
