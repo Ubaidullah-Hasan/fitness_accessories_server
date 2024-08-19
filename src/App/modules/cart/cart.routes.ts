@@ -16,5 +16,9 @@ router.patch(
     "/change-quantity/:id",
     cartOperation.changeCartQuantity
 );
+router.delete(
+    "/:id",
+    cartOperation.removeCart
+);
 
 export const cartsRoute = router;

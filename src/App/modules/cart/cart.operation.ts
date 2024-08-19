@@ -22,21 +22,13 @@ export const addToCart = async (req: Request, res: Response) => {
 
         let result;
         if (existingCartItem) {
-            // Check if adding the new quantity would exceed the stock
             const newQuantity = existingCartItem.quantity + quantity;
             if (newQuantity > product.stock) {
                 return res.status(400).json({ message: 'Cannot add more than available stock' });
             }
 
-            // Update the quantity of the existing cart item
             existingCartItem.quantity = newQuantity;
-            existingCartItem.stock = existingCartItem.stock - quantity;
-            const result = await existingCartItem.save();
-
-            if (result) {
-                product.stock = product.stock - quantity;
-                await product.save();
-            }
+            await existingCartItem.save();
 
         } else {
             // Create a new cart item
@@ -45,20 +37,16 @@ export const addToCart = async (req: Request, res: Response) => {
                 name: product.name,
                 price: product.price,
                 quantity,
-                stock: product.stock - quantity,
+                stock: product.stock,
                 image: product.image,
                 brand: product.brand,
             });
-            const result = await newCartItem.save();
-            if (result) {
-                product.stock = product.stock - quantity;
-                await product.save();
-            }
+            await newCartItem.save();
         }
 
         res.status(200).json({
             message: 'Product added to cart successfully',
-            // data: 
+            data: result
         });
     } catch (error) {
         res.status(500).json({ message: 'Server error', error });
@@ -85,29 +73,41 @@ const changeCartQuantity = async (req: Request, res: Response) => {
     try {
         const { id, quantity } = req.body;
         const existingCart = await CartItemModel.findById(id);
-        console.log({ previous: existingCart }, '\n\n');
+        // console.log({ previous: existingCart }, '\n\n');
         if (!existingCart) {
             res.status(404).json({ message: 'Cart item not found!' });
         }
 
-
         const product = await ProductModel.findById(existingCart?.productId);
-        if (existingCart && existingCart?.stock >= quantity && product && product?.stock >= quantity) {
+        if (existingCart && product && product?.stock >= quantity) {
             existingCart.quantity += quantity;
-            existingCart.stock = existingCart.stock - quantity;
-            product.stock = product?.stock - quantity;
         }
-        product?.save();
         existingCart?.save();
-        console.log({ existingCart, product }) 
 
     } catch (error) {
         res.status(500).json({ message: 'Server error', error });
     }
 }
 
+const removeCart = async (req: Request, res: Response) => {
+    const { id } = req.params;
+    try {
+        const result = await CartItemModel.findByIdAndDelete(id);
+        if (!result) {
+            return res.status(404).json({ message: "Item not found" });
+        }
+        res.status(200).json({ message: "Item deleted successfully" });
+    } catch (error) {
+        res.status(500).json({ message: "Server error" });
+    }
+}
+
+
+
+
 export const cartOperation = {
     addToCart,
     getAllCart,
     changeCartQuantity,
+    removeCart
 }
