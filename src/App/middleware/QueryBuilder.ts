@@ -48,8 +48,10 @@ class QueryBuilder<T> {
 
     filterByCategories() {
         const selectedCategoriesStr = this?.query?.selectedCategories as string;
-        if (selectedCategoriesStr) {
-            const selectedCategories: mongoose.Types.ObjectId[] = selectedCategoriesStr.split(',').map(cat => new mongoose.Types.ObjectId(cat.trim()));
+        const filterEmpty = selectedCategoriesStr.split(',').filter(item => item !== "");
+        
+        if (filterEmpty) {
+            const selectedCategories: mongoose.Types.ObjectId[] = filterEmpty.map(cat => new mongoose.Types.ObjectId(cat.trim()));
 
             if (selectedCategories.length > 0) {
                 this.modelQuery = this.modelQuery.find({
