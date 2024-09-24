@@ -48,17 +48,20 @@ class QueryBuilder<T> {
 
     filterByCategories() {
         const selectedCategoriesStr = this?.query?.selectedCategories as string;
-        const filterEmpty = selectedCategoriesStr.split(',').filter(item => item !== "");
-        
-        if (filterEmpty) {
-            const selectedCategories: mongoose.Types.ObjectId[] = filterEmpty.map(cat => new mongoose.Types.ObjectId(cat.trim()));
+        if (selectedCategoriesStr) {
+            const filterEmpty = selectedCategoriesStr.split(',').filter(item => item !== "");
 
-            if (selectedCategories.length > 0) {
-                this.modelQuery = this.modelQuery.find({
-                    categoryId: { $in: selectedCategories }
-                });
+            if (filterEmpty) {
+                const selectedCategories: mongoose.Types.ObjectId[] = filterEmpty.map(cat => new mongoose.Types.ObjectId(cat.trim()));
+
+                if (selectedCategories.length > 0) {
+                    this.modelQuery = this.modelQuery.find({
+                        categoryId: { $in: selectedCategories }
+                    });
+                }
             }
         }
+
         return this;
     }
 

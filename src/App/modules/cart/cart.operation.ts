@@ -55,19 +55,25 @@ export const addToCart = async (req: Request, res: Response) => {
 
 const getAllCart = async (req: Request, res: Response) => {
     try {
-        const carts = await CartItemModel.find();
-        const totalItemCount = carts.reduce((total, cartItem) => total + cartItem.quantity, 0);
 
-        res.status(200).json(
-            {
-                carts: carts,
-                totalCartsItem: totalItemCount
-            }
-        );
+        const carts = await CartItemModel.find()
+            .populate({
+                path: 'productId',
+                match: { stock: { $gt: 0 } }
+            });
+            
+        const filteredCarts = carts.filter(cartItem => cartItem.productId);
+        const totalItemCount = filteredCarts.reduce((total, cartItem) => total + cartItem.quantity, 0);
+
+        res.status(200).json({
+            carts: filteredCarts,
+            totalCartsItem: totalItemCount
+        });
     } catch (error) {
         res.status(500).json({ message: 'Server error', error });
     }
 }
+
 
 const changeCartQuantity = async (req: Request, res: Response) => {
     try {
@@ -79,10 +85,17 @@ const changeCartQuantity = async (req: Request, res: Response) => {
         }
 
         const product = await ProductModel.findById(existingCart?.productId);
+        // console.log(product?.stock, existingCart?.quantity + quantity);
+
+        if (product && (product?.stock < existingCart?.quantity + quantity)){
+            return res.status(404).json({ message: `Sorry, only ${product?.stock} units are available in stock.` });
+        }
+
         if (existingCart && product && product?.stock >= quantity) {
             existingCart.quantity += quantity;
         }
-        existingCart?.save();
+        const result = await existingCart?.save();
+        return res.status(200).json(result);
 
     } catch (error) {
         res.status(500).json({ message: 'Server error', error });
