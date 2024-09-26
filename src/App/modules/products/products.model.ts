@@ -17,7 +17,7 @@ const productSchema: Schema = new Schema<TProduct>({
     image: { type: String, required: true },
     stock: { type: Number, required: true },
     brand: { type: String, required: true },
-    rating: { type: Number, required: true },
+    rating: { type: Number, required: true, default: 0 },
 });
 
 export const ProductModel = model<TProduct>('Product', productSchema);

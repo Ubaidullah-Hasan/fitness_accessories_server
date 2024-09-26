@@ -17,5 +17,9 @@ router.get(
     "/:id",
     productController.getSingleProducts
 )
+router.delete(
+    "/:id",
+    productController.deleteSingleProducts
+)
 
 export const productsRoute = router

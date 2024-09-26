@@ -34,8 +34,20 @@ const createProduct = async (req: Request, res: Response) => {
     }
 }
 
+const deleteSingleProducts = async (req: Request, res: Response) => {
+    const { id } = req.params;
+
+    try {
+        const product = await productServices.deleteSingleProductsFromDB(id);
+        res.send({success: true, message: "Product successfully deleted!", data: product});
+    } catch (err) {
+        res.send("Can't fetch data!")
+    }
+}
+
 export const productController = {
     getAllProducts,
     getSingleProducts,
     createProduct,
+    deleteSingleProducts,
 }
