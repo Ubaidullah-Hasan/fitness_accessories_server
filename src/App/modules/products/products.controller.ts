@@ -45,9 +45,27 @@ const deleteSingleProducts = async (req: Request, res: Response) => {
     }
 }
 
+const updateSingleProducts = async (req: Request, res: Response) => {
+    const { id } = req.params;
+    const body = req.body;
+
+    try {
+        const product = await productServices.updateProductIntoDB(id, body);
+        res.send({
+            success: true,
+            message: "Product successfully updated",
+            result: product
+        });
+    } catch (err) {
+        console.log(err);
+        res.send("Can't fetch data!")
+    }
+}
+
 export const productController = {
     getAllProducts,
     getSingleProducts,
     createProduct,
     deleteSingleProducts,
+    updateSingleProducts,
 }

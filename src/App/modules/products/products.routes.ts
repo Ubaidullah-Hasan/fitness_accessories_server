@@ -22,4 +22,9 @@ router.delete(
     productController.deleteSingleProducts
 )
 
+router.patch(
+    "/:id",
+    productController.updateSingleProducts
+)
+
 export const productsRoute = router
