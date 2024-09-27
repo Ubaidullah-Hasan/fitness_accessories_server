@@ -6,7 +6,7 @@ export const app:Application = express();
 
 // parser
 const corsOptions = {
-    origin: ["http://localhost:5173/",],
+    origin: "https://fitness-accessories-client.vercel.app",
     credentials: true,
 };
 
