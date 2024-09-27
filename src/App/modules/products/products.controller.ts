@@ -47,7 +47,7 @@ const deleteSingleProducts = async (req: Request, res: Response) => {
 
 const updateSingleProducts = async (req: Request, res: Response) => {
     const { id } = req.params;
-    const body = req.body;
+    const body = req.body; 
 
     try {
         const product = await productServices.updateProductIntoDB(id, body);
